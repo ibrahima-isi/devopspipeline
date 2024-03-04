@@ -70,7 +70,9 @@ pipeline {
         stage("PUBLISH TO NEXUS") {
             steps {
                 echo "====================== NEXUS PUBLISHING =================="
-                script {}
+                // script {
+
+                // }
             }
         }
     }
