@@ -87,7 +87,7 @@ pipeline {
                 script {
                     pom = readMavenPom file: "pom.xml";
                     fileByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                    echo "${fileByGlob[0].name} ${fileByGlob[0].path} ${fileByGlob[0]..directory} ${fileByGlob[0].length} ${fileByGlob[0].lastModified}"
+                    echo "${fileByGlob[0].name} ${fileByGlob[0].path} ${fileByGlob[0].directory} ${fileByGlob[0].length} ${fileByGlob[0].lastModified}"
                     artifactPath = fileByGlob[0].path;
                     artifactExists = fileExists artifactPath;
 
@@ -112,9 +112,6 @@ pipeline {
                     else{
                         error "*** File: ${artifactPath}, could not be found";
                     }
-
-
-
                 }
             }
         }
