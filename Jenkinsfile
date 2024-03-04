@@ -104,7 +104,7 @@ pipeline {
                             artifacts: [
                                 artifactId: pom.artifactId,
                                 classifier: '',
-                                file: artifactPaht,
+                                file: artifactPath,
                                 type: pom.packaging
                             ]
                         );
