@@ -17,5 +17,15 @@ pipeline {
                 git branch: 'main', credentialsId: 'github', url: 'https://github.com/ibrahima-isi/devopspipeline'
             }
         }
+        stage("BUILD WITH MAVEN"){
+            steps {
+                sh "mvn clean package"
+            }
+        }
+        stage("TEST STAGE"){
+            steps {
+                sh "mvn test"
+            }
+        }
     }
 }
