@@ -16,7 +16,7 @@ pipeline{
         stage("CHECKOUT FROM SCM"){
             steps{
                 echo "==================CHECKING FROM GITHUB================"
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/ibrahima-isi/jenkins-repos/blob/main/Jenkinsfile'
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/ibrahima-isi/devopspipeline'
             }
         }
     }
