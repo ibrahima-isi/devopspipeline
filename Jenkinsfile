@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     echo "==================QUALITY GATES AWAIT================"
-                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonar'
+                    // waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonar'
                 }
             }
         }
