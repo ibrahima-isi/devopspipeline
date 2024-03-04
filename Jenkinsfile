@@ -19,6 +19,7 @@ pipeline {
         }
         stage("BUILD WITH MAVEN"){
             steps {
+                echo "==================BUILDING================"
                 sh "mvn clean package"
             }
         }
@@ -30,7 +31,16 @@ pipeline {
         stage("SONAR ANALYSIS") {
             steps {
                 withSonarQubeEnv('sonar-server') {
+                    echo "==================SONAR ANALYSING================"
                     sh "mvn sonar:sonar"
+                }
+            }
+        }
+        stage("QUALITY GATES") {
+            steps {
+                script {
+                    echo "==================QUALITY GATES AWAIT================"
+                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonar'
                 }
             }
         }
