@@ -5,12 +5,23 @@ pipeline {
         maven "M3"
     }
     environment {
+        // docker config
         APP_NAME = 'complete-production-boweplus'
         RELEASE = "1.0.0"
         DOCKER_USER = "ibrahimaisi"
         DOCKER_PASS = "dockerhub"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+
+        // Nexus config
+        def mvn = tool 'M3'
+
+        NEXUS_VERSION = "nexus3"
+        NEXUS_PROTOCOL = "http"
+        NEXUS_URL = "172.18.0.4:8081"
+        NEXUS_REPOSITORY = "boweplus-repository"
+        NEXUS_CREDENTIAL_ID = "nexus-credentials"
+        ARTIFACT_VERSION = "${BUILD_NUMBER}"
     }
     stages {
         stage("CLEANUP WORKSPACE") {
@@ -36,7 +47,7 @@ pipeline {
                 sh "mvn test"
             }
         }
-        stage("SONAR ANALYSIS") {
+        stage("SONAR") {
             steps {
                 withSonarQubeEnv('sonar-server') {
                     echo "==================SONAR ANALYSING================"
@@ -52,20 +63,27 @@ pipeline {
                 }
             }
         }
-        stage("BUILD PUBLISH IMAGE") {
+        stage("DOCKER PUBLISH") {
             steps {
-                echo "==================PUBLISHING TO DOCKER HUB================"
-                script {
-                    docker.withRegistry("", DOCKER_PASS) {
-                        docker_image = docker.build "${IMAGE_NAME}"
-                    }
-                    docker.withRegistry("", DOCKER_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push("latest")
-                        echo "=================== Pushed ===================="
-                    }
-                }
+                echo "==================DOCKER================"
+                // script {
+                    // docker.withRegistry("", DOCKER_PASS) {
+                        // docker_image = docker.build "${IMAGE_NAME}"
+                    // }
+                    // docker.withRegistry("", DOCKER_PASS) {
+                        // docker_image.push("${IMAGE_TAG}")
+                        // docker_image.push("latest")
+                        // echo "=================== Pushed ===================="
+                    // }
+                // }
             }
         }
+        stage("NEXUS") {
+    steps {
+        echo "====================== NEXUS PUBLISHING =================="
+        
+    }
+}
+
     }
 }
