@@ -20,7 +20,8 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "172.18.0.4:8081"
-        NEXUS_REPOSITORY = "boweplus-repository"
+        GROUP_ID = "com.bowe"
+        NEXUS_REPOSITORY = "boweplus-repos"
         NEXUS_CREDENTIAL_ID = "nexus-credentials"
         ARTIFACT_VERSION = "${BUILD_NUMBER}"
     }
@@ -65,7 +66,7 @@ pipeline {
                 }
             }
         }
-        stage("DOCKER PUBLISH") {
+        stage("DOCKER") {
             steps {
                 echo "==================DOCKER================"
                 // script {
@@ -83,6 +84,38 @@ pipeline {
         stage("NEXUS") {
             steps {
                 echo "====================== NEXUS PUBLISHING =================="
+                script {
+                    pom = readMavenPom file: "pom.xml";
+                    fileByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                    echo "${fileByGlob[0].name} ${fileByGlob[0].path} ${fileByGlob[0]..directory} ${fileByGlob[0].length} ${fileByGlob[0].lastModified}"
+                    artifactPath = fileByGlob[0].path;
+                    artifactExists = fileExists artifactPath;
+
+                    if(artifactExists){
+                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                        nexusArtifactUploader(
+                            nexusVersion: NEXUS_VERSION,
+                            protocol: NEXUS_PROTOCOL,
+                            nexusUrl: NEXUS_URL,
+                            groupId: pom.groupId,
+                            version: ARTIFACT_VERSION,
+                            repository: NEXUS_REPOSITORY,
+                            credentialsId: NEXUS_CREDENTIAL_ID,
+                            artifacts: [
+                                artifactId: pom.artifactId,
+                                classifier: '',
+                                file: artifactPaht,
+                                type: pom.packaging
+                            ]
+                        );
+                    }
+                    else{
+                        error "*** File: ${artifactPath}, could not be found";
+                    }
+
+
+
+                }
             }
         }
     }
