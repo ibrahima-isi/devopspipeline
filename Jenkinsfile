@@ -52,19 +52,25 @@ pipeline {
                 }
             }
         }
-        stage("BUILD PUBLISH IMAGE") {
+        stage("DOCKER PUBLISH") {
             steps {
                 echo "==================PUBLISHING TO DOCKER HUB================"
                 script {
                     docker.withRegistry("", DOCKER_PASS) {
-                        docker_image = docker.build "${IMAGE_NAME}"
+                        // docker_image = docker.build "${IMAGE_NAME}"
                     }
                     docker.withRegistry("", DOCKER_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push("latest")
+                        // docker_image.push("${IMAGE_TAG}")
+                        // docker_image.push("latest")
                         echo "=================== Pushed ===================="
                     }
                 }
+            }
+        }
+        stage("PUBLISH TO NEXUS") {
+            steps {
+                echo "====================== NEXUS PUBLISHING =================="
+                script {}
             }
         }
     }
