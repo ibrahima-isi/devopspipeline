@@ -65,26 +65,26 @@ pipeline {
                 }
             }
         }
-        // stage("DOCKER PUBLISH") {
-        //     steps {
-        //         echo "==================DOCKER================"
-        //         // script {
-        //             // docker.withRegistry("", DOCKER_PASS) {
-        //                 // docker_image = docker.build "${IMAGE_NAME}"
-        //             // }
-        //             // docker.withRegistry("", DOCKER_PASS) {
-        //                 // docker_image.push("${IMAGE_TAG}")
-        //                 // docker_image.push("latest")
-        //                 // echo "=================== Pushed ===================="
-        //             // }
-        //         // }
-        //     }
-        // }
-        // stage("NEXUS") {
-        //     steps {
-        //         echo "====================== NEXUS PUBLISHING =================="
-        //     }
-        // }
+        stage("DOCKER PUBLISH") {
+            steps {
+                echo "==================DOCKER================"
+                // script {
+                    // docker.withRegistry("", DOCKER_PASS) {
+                        // docker_image = docker.build "${IMAGE_NAME}"
+                    // }
+                    // docker.withRegistry("", DOCKER_PASS) {
+                        // docker_image.push("${IMAGE_TAG}")
+                        // docker_image.push("latest")
+                        // echo "=================== Pushed ===================="
+                    // }
+                // }
+            }
+        }
+        stage("NEXUS") {
+            steps {
+                echo "====================== NEXUS PUBLISHING =================="
+            }
+        }
     }
 }
 
