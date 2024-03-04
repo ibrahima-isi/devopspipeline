@@ -79,11 +79,9 @@ pipeline {
             }
         }
         stage("NEXUS") {
-    steps {
-        echo "====================== NEXUS PUBLISHING =================="
-        
-    }
-}
-
+            steps {
+                echo "====================== NEXUS PUBLISHING =================="
+            }
+        }
     }
 }
