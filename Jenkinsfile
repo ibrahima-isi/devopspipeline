@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         // docker config
+        // docker config
         APP_NAME = 'complete-production-boweplus'
         RELEASE = "1.0.0"
         DOCKER_USER = "ibrahimaisi"
@@ -23,6 +24,7 @@ pipeline {
         NEXUS_CREDENTIAL_ID = "nexus-credentials"
         ARTIFACT_VERSION = "${BUILD_NUMBER}"
     }
+
     stages {
         stage("CLEANUP WORKSPACE") {
             steps {
@@ -85,3 +87,4 @@ pipeline {
         }
     }
 }
+
